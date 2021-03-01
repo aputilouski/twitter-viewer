@@ -3,6 +3,10 @@ npm-debug.log*
 
 /venv
 /.idea/
-twitter_viewer/static/
-main_app__ui/build
-main_app__ui/node_modules
+/twitter_viewer/static/
+/main_app__ui/build
+/main_app__ui/node_modules
+
+db.sqlite3
+/__pychache__/
+*.pyc
