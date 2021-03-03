@@ -8,5 +8,5 @@ npm-debug.log*
 /main_app__ui/node_modules
 
 db.sqlite3
-/__pychache__/
+__pychache__/
 *.pyc

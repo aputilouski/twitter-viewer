@@ -25,7 +25,7 @@ SECRET_KEY = 'zy94!b-^9x*1o480t*08^@$8(y48o8=d2u%e_pu6brx8s(*p!p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.99.100']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -129,8 +129,9 @@ STATICFILES_DIRS = (
     (BASE_DIR / '../main_app__ui/build/static'),
 )
 
-CORS_ALLOWED_ORIGINS = [
-    "*"
-    # "http://localhost:3000",
-    # "http://192.168.99.100",
-]
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     "*"
+#     "http://localhost:3000",
+#     "http://192.168.99.100",
+# ]
