@@ -6,13 +6,15 @@ const ADD_HISTORY_ITEM = 'ADD_HISTORY_ITEM';
 const REMOVE_HISTORY_ITEM = 'REMOVE_HISTORY_ITEM';
 const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
 const SET_MEDIA_AREA_DATA = 'SET_MEDIA_AREA_DATA';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 
 let initialState = {
     tweets: [],
     history: ['belteanews', 'OnlinerBY', 'tutby'],
     isLoading: false,
     inputValue: {},
-    mediaArea: {}
+    mediaArea: {},
+    currentPage: 1,
 }
 
 const TwitterReducer = (state = initialState, action) => {
@@ -62,6 +64,12 @@ const TwitterReducer = (state = initialState, action) => {
                 mediaArea: {media: action.media},
             };
         }
+        case SET_CURRENT_PAGE: {
+            return {
+                ...state,
+                currentPage: action.value,
+            };
+        }
         default:
             return state;
     }
@@ -73,6 +81,7 @@ export const addHistoryItem = (item) => ({type: ADD_HISTORY_ITEM, item})
 export const removeHistoryItem = (item) => ({type: REMOVE_HISTORY_ITEM, item})
 export const setInputValue = (input) => ({type: SET_INPUT_VALUE, input})
 export const setMediaAriaData = (media) => ({type: SET_MEDIA_AREA_DATA, media})
+export const setCurrentPage = (value) => ({type: SET_CURRENT_PAGE, value})
 
 
 export const getTweetsTHUNK = (currentPage, input) => async (dispatch) => {

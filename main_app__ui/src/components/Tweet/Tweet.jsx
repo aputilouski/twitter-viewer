@@ -120,7 +120,7 @@ const Tweet = (props) => {
                                 {props.favorite_count}
                             </Typography>
                             <Typography className={classes.control}>Retweets: {props.retweet_count}</Typography>
-                            <Typography className={classes.control}><Link href="#" target="_blank">Tweet Link</Link></Typography>
+                            <Typography className={classes.control}><Link href={`https://twitter.com/${props.user.screen_name}/status/${props.id}/`} target="_blank">Link</Link></Typography>
                         </Box>
                     </CardContent>
                 </Card>

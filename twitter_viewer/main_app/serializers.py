@@ -5,6 +5,7 @@ from dateutil.parser import parse
 class UserSerializer(serializers.Serializer):
     name = serializers.CharField()
     url = serializers.CharField()
+    screen_name = serializers.CharField()
     profile_image_url_https = serializers.CharField()
 
 

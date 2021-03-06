@@ -2,8 +2,22 @@ import React from 'react';
 import {connect} from "react-redux";
 import Tweet from "./Tweet";
 import Grid from "@material-ui/core/Grid";
+import Pagination from "@material-ui/lab/Pagination";
+import {makeStyles} from "@material-ui/styles";
+import {setCurrentPage} from "../../redux/twitter-reduser";
+
+const styles = makeStyles((theme) => ({
+    pagination_wrapper: {
+        display: 'flex',
+    },
+    pagination: {
+        margin: '40px auto'
+    }
+}));
+
 
 const TweetsContainer = (props) => {
+    const classes = styles();
     const tweets = props.tweets.map(
         tweet => <Grid key={tweet.id} item xs={4}>
             <Tweet isLoading={props.isLoading}
@@ -11,11 +25,23 @@ const TweetsContainer = (props) => {
                    {...tweet} />
         </Grid>);
 
+    const handleChange = async (event, value) => {
+        props.setCurrentPage(value);
+        await props.getTweets(value, props.inputValue.username);
+    };
+
     return (
         <>
             {tweets.length > 0 &&
                 <Grid container spacing={3}>{tweets}</Grid>
             }
+            {(tweets.length > 0 || props.currentPage > 1) &&
+                <div className={classes.pagination_wrapper}>
+                    <Pagination count={10} page={props.currentPage} onChange={handleChange}
+                                variant="outlined" className={classes.pagination} />
+                </div>
+            }
+
         </>
     );
 }
@@ -23,10 +49,16 @@ const TweetsContainer = (props) => {
 let mapStateToProps = (state) => {
     return {
         tweets: state.twitterPage.tweets,
+        currentPage: state.twitterPage.currentPage,
+        inputValue: state.twitterPage.inputValue,
         isLoading: state.twitterPage.isLoading,
     }
 }
 let mapDispatchToProps = (dispatch) => {
-    return {}
+    return {
+        setCurrentPage: (value) => {
+            dispatch(setCurrentPage(value));
+        },
+    }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TweetsContainer);

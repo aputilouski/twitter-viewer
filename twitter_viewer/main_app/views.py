@@ -1,14 +1,12 @@
+# Create your views here.
+
 import twitter
 from django.contrib.auth import authenticate
-from django.shortcuts import render
-from django.core.paginator import Paginator
-from django.http import HttpResponse
-
-# Create your views here.
+from django.core.cache import cache
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 from main_app.serializers import TweetsSerializer
 
 # Create your views here.
@@ -34,20 +32,28 @@ def login(request):
         return Response({'error': 1, 'message': 'Invalid login or password!'})
 
 
-class Tweets(APIView):
+class Tweets(APIView, PageNumberPagination):
+    page_size = 12
+    page_query_param = 'page'
 
-    def post(self, request, page):
+    def post(self, request):
         try:
             username = request.data['input']
-            if len(username) > 0:
-                user_tweets = api.GetUserTimeline(screen_name=username, exclude_replies=True, include_rts=False,
-                                                  count=12)
-                # print(user_tweets[0])
-                # p = Paginator(user_tweets, 6)
-                serializer = TweetsSerializer(user_tweets, many=True)
-                return Response(serializer.data)
-            else:
+            if len(username) == 0:
                 return Response()
+
+            cache_key = 'user_tweets__' + username
+            user_tweets = cache.get(cache_key)
+            if not user_tweets:
+                user_tweets = api.GetUserTimeline(screen_name=username, exclude_replies=True, include_rts=False,
+                                                  count=150)
+                cache.set(cache_key, user_tweets, 900)
+
+            # print(user_tweets[0])
+            results = self.paginate_queryset(user_tweets, request)
+            serializer = TweetsSerializer(results, many=True)
+            return Response(serializer.data)
+
         except twitter.error.TwitterError:
             # Not Authorized
             return Response()

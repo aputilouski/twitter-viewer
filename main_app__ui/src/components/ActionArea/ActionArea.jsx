@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import {Field, reduxForm} from "redux-form";
 import styles from './ActionArea.module.css'
 import {connect} from "react-redux";
-import {getTweetsTHUNK, setLoadingStatus} from "../../redux/twitter-reduser";
+import {setCurrentPage, setLoadingStatus} from "../../redux/twitter-reduser";
 
 
 class GetUserTweetsForm extends React.Component {
@@ -47,6 +47,7 @@ const GetUserTweetsReduxForm = connect(
 class ActionArea extends React.Component {
     onSubmit = async (formData) => {
         this.props.loadingStatus(true);
+        this.props.currentPage(1);
         await this.props.getTweets(1, formData.username);
     }
     render() {
@@ -65,11 +66,11 @@ let mapStateToProps = (state) => {
 }
 let mapDispatchToProps = (dispatch) => {
     return {
-        getTweets: async (page, input) => {
-            await getTweetsTHUNK(page, input)(dispatch);
-        },
         loadingStatus: (status) => {
             dispatch(setLoadingStatus(status));
+        },
+        currentPage: (value) => {
+            dispatch(setCurrentPage(value));
         }
     }
 }

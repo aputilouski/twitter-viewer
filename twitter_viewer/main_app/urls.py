@@ -3,5 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('login/', login),
-    path('get_tweets/<int:page>', Tweets.as_view())
+    path('get_tweets/', Tweets.as_view())
 ]
