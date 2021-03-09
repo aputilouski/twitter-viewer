@@ -1,3 +1,4 @@
+import re
 from rest_framework import serializers
 from dateutil.parser import parse
 
@@ -25,7 +26,10 @@ class TweetsSerializer(serializers.Serializer):
     full_text = serializers.SerializerMethodField()
 
     def get_full_text(self, obj):
-        return obj.full_text[0:-24]
+        # return obj.full_text[0:-24]
+        return re.compile(r'''((?:mailto:|ftp://|https?://)[^ <>'"{}|\\^`[\]]*)''').sub(r'<a href="\1" target="_blank">Link</a>', obj.full_text)
+
+
 
     def get_created_at(self, obj):
         dt = parse(obj.created_at).strftime("%A, %d. %B %Y %I:%M%p")

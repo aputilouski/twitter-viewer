@@ -40,22 +40,19 @@ class Tweets(APIView, PageNumberPagination):
         try:
             username = request.data['input']
             if len(username) == 0:
-                return Response()
+                return Response(status=400, data={"message": "Invalid input value"})
 
             cache_key = 'user_tweets__' + username
             user_tweets = cache.get(cache_key)
             if not user_tweets:
-                user_tweets = api.GetUserTimeline(screen_name=username, exclude_replies=True, include_rts=False,
-                                                  count=150)
+                user_tweets = api.GetUserTimeline(screen_name=username, exclude_replies=True,
+                                                  include_rts=False, count=100)
                 cache.set(cache_key, user_tweets, 900)
 
             # print(user_tweets[0])
             results = self.paginate_queryset(user_tweets, request)
             serializer = TweetsSerializer(results, many=True)
-            return Response(serializer.data)
+            return Response({"tweets": serializer.data, "amount": len(user_tweets), "page_size": self.page_size})
 
-        except twitter.error.TwitterError:
-            # Not Authorized
-            return Response()
-        except KeyError:
-            return Response()
+        except:
+            return Response(status=500, data={"message": "Server error"})

@@ -30,6 +30,8 @@ const TweetsContainer = (props) => {
         await props.getTweets(value, props.inputValue.username);
     };
 
+    const pages_amount = props.pageSize > 0 ? Math.ceil(props.tweetsAmount/props.pageSize) : 0;
+
     return (
         <>
             {tweets.length > 0 &&
@@ -37,7 +39,7 @@ const TweetsContainer = (props) => {
             }
             {(tweets.length > 0 || props.currentPage > 1) &&
                 <div className={classes.pagination_wrapper}>
-                    <Pagination count={10} page={props.currentPage} onChange={handleChange}
+                    <Pagination count={pages_amount} page={props.currentPage} onChange={handleChange}
                                 variant="outlined" className={classes.pagination} />
                 </div>
             }
@@ -49,6 +51,8 @@ const TweetsContainer = (props) => {
 let mapStateToProps = (state) => {
     return {
         tweets: state.twitterPage.tweets,
+        tweetsAmount: state.twitterPage.tweetsAmount,
+        pageSize: state.twitterPage.pageSize,
         currentPage: state.twitterPage.currentPage,
         inputValue: state.twitterPage.inputValue,
         isLoading: state.twitterPage.isLoading,

@@ -10,6 +10,8 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 
 let initialState = {
     tweets: [],
+    tweetsAmount: 0,
+    pageSize: 0,
     history: ['belteanews', 'OnlinerBY', 'tutby'],
     isLoading: false,
     inputValue: {},
@@ -23,6 +25,8 @@ const TwitterReducer = (state = initialState, action) => {
             return {
                 ...state,
                 tweets: [...action.tweets],
+                tweetsAmount: action.amount,
+                pageSize: action.page_size,
                 isLoading: false,
             };
         }
@@ -75,7 +79,7 @@ const TwitterReducer = (state = initialState, action) => {
     }
 }
 
-export const setTweetsActionCreator = (tweets) => ({type: SET_TWEETS, tweets})
+export const setTweetsActionCreator = (tweets, amount, page_size) => ({type: SET_TWEETS, tweets, amount, page_size})
 export const setLoadingStatus = (status) => ({type: LOADING_TWEETS, status})
 export const addHistoryItem = (item) => ({type: ADD_HISTORY_ITEM, item})
 export const removeHistoryItem = (item) => ({type: REMOVE_HISTORY_ITEM, item})
@@ -86,9 +90,11 @@ export const setCurrentPage = (value) => ({type: SET_CURRENT_PAGE, value})
 
 export const getTweetsTHUNK = (currentPage, input) => async (dispatch) => {
     let response = await tweetsAPI.getTweets(currentPage, input);
-    let tweets = response;
+    let tweets = response.tweets;
+    let tweetsAmount = response.amount;
+    let page_size = response.page_size;
 
-    dispatch(setTweetsActionCreator(tweets));
+    dispatch(setTweetsActionCreator(tweets, tweetsAmount, page_size));
     dispatch(addHistoryItem(input));
 }
 
