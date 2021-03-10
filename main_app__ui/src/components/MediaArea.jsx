@@ -89,17 +89,20 @@ class MediaArea extends React.Component {
                             </Fade>
                             <Box className={classes.slider}>
                                 {this.props.mediaArea.media?.map((item, i) => {
-                                    // if (item.type === "photo") {
-                                        return (
-                                            <Slide direction={this.state.slideStatus === i ? "left" : "right"}
-                                                   in={this.state.slideStatus === i}
-                                                   className={classes.slide}
-                                                   key={i}
-                                            >
-                                                <Box><div className={classes.slideContent}><img src={item.media_url_https}/></div></Box>
-                                            </Slide>
-                                        )
-                                    // }
+                                    return (
+                                        <Slide direction={this.state.slideStatus === i ? "left" : "right"}
+                                               in={this.state.slideStatus === i}
+                                               className={classes.slide}
+                                               key={i}
+                                        >
+                                            <Box>
+                                                <div className={classes.slideContent}>
+                                                    {item.type === "photo" && <img src={item.media_url_https}/>}
+                                                    {item.type === "video" && <video autoPlay controls src={item.video_info.url}></video>}
+                                                </div>
+                                            </Box>
+                                        </Slide>
+                                    )
                                 })
                                 }
                             </Box>

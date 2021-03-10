@@ -12,8 +12,7 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
-
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 
 const TweetImageGalleryStyles = makeStyles((theme) => ({
     root: {
@@ -35,6 +34,19 @@ const TweetImageGalleryStyles = makeStyles((theme) => ({
         background:
             'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
     },
+    videoIconWrapper: {
+        position: "absolute",
+        zIndex: 10,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center"
+    },
+    videoIcon: {
+        display: "flex",
+        margin: "0 auto",
+        color: theme.palette.grey[100]
+    }
 }));
 const TweetImageGallery = (props) => {
     const classes = TweetImageGalleryStyles();
@@ -51,6 +63,9 @@ const TweetImageGallery = (props) => {
             <GridList className={classes.gridList} cols={size} onClick={showTweetMedia}>
                 {props.media.map((tile, i) => (
                     <GridListTile key={tile.id}>
+                        {tile.type === 'video' && <Box className={classes.videoIconWrapper}>
+                            <PlayCircleOutlineIcon className={classes.videoIcon} style={{ fontSize: 60}}/>
+                        </Box>}
                         <img src={tile.media_url_https}/>
                     </GridListTile>
                 ))}
