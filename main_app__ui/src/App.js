@@ -6,6 +6,7 @@ import {BrowserRouter, Redirect, Route, Switch, withRouter} from "react-router-d
 import LoginPage from "./components/LoginPage/Login";
 import TwitterViewerPage from "./components/TwitterViewerPage";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import AlertZone from "./components/AlertZone";
 
 const theme = createMuiTheme({});
 
@@ -24,6 +25,7 @@ function App() {
                         <Route path="/main"
                                render={() => <TwitterViewerPage/>}/>
                     </Switch>
+                    <AlertZone />
                 </Provider>
             </BrowserRouter>
         </ThemeProvider>

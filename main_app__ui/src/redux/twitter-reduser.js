@@ -1,4 +1,5 @@
 import {tweetsAPI} from "../api/tweets-api";
+import {setAlertZoneActionCreator, setErrorMessage} from "./app-reduser";
 
 const SET_TWEETS = 'SET_TWEETS';
 const LOADING_TWEETS = 'LOADING_TWEETS';
@@ -24,7 +25,7 @@ const TwitterReducer = (state = initialState, action) => {
         case SET_TWEETS: {
             return {
                 ...state,
-                tweets: [...action.tweets],
+                tweets: action.tweets.length ? [...action.tweets] : [],
                 tweetsAmount: action.amount,
                 pageSize: action.page_size,
                 isLoading: false,
@@ -79,7 +80,8 @@ const TwitterReducer = (state = initialState, action) => {
     }
 }
 
-export const setTweetsActionCreator = (tweets, amount, page_size) => ({type: SET_TWEETS, tweets, amount, page_size})
+export const setTweetsActionCreator = ({tweets, amount, page_size}) => ({type: SET_TWEETS, tweets, amount, page_size})
+export const clearTweets = () => ({ tweets: [], amount: 0, page_size: 0})
 export const setLoadingStatus = (status) => ({type: LOADING_TWEETS, status})
 export const addHistoryItem = (item) => ({type: ADD_HISTORY_ITEM, item})
 export const removeHistoryItem = (item) => ({type: REMOVE_HISTORY_ITEM, item})
@@ -88,14 +90,14 @@ export const setMediaAriaData = (media) => ({type: SET_MEDIA_AREA_DATA, media})
 export const setCurrentPage = (value) => ({type: SET_CURRENT_PAGE, value})
 
 
-export const getTweetsTHUNK = (currentPage, input) => async (dispatch) => {
-    let response = await tweetsAPI.getTweets(currentPage, input);
-    let tweets = response.tweets;
-    let tweetsAmount = response.amount;
-    let page_size = response.page_size;
-
-    dispatch(setTweetsActionCreator(tweets, tweetsAmount, page_size));
-    dispatch(addHistoryItem(input));
+export const getTweetsTHUNK = (currentPage, input) => (dispatch) => {
+   tweetsAPI.getTweets(currentPage, input).then(response => {
+       dispatch(setTweetsActionCreator({...response.data}));
+       dispatch(addHistoryItem(input));
+    }).catch(function(error) {
+       dispatch(setAlertZoneActionCreator(setErrorMessage(error?.response?.data?.message || error)));
+       dispatch(setTweetsActionCreator(clearTweets()));
+    });
 }
 
 

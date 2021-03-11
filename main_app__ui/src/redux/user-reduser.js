@@ -1,5 +1,6 @@
 import {userAPI} from "../api/user-api";
 import {stopSubmit} from "redux-form";
+import {setAlertZoneActionCreator, setErrorMessage} from "./app-reduser";
 
 const SET_USER = 'SET_USER';
 
@@ -26,8 +27,11 @@ export const loginUserActionCreator = (user, isLogin = true) => ({type: SET_USER
 
 export const loginUserThunk = (user) => async (dispatch) => {
     let response = await userAPI.loginUser(user);
-    if(response.error){
-        dispatch(stopSubmit("login", {_error: response.message}));
+    if(response.data?.error || response.status!== 200){
+        dispatch(setAlertZoneActionCreator(setErrorMessage(response.data?.message)));
+        setTimeout(()=>{
+            dispatch(stopSubmit("login", {_error: response.data?.message}));
+        });
     }
     else {
         dispatch(loginUserActionCreator(user));
