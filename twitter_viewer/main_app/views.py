@@ -26,10 +26,9 @@ api = twitter.Api(consumer_key=api_key,
 def login(request):
     user_data = request.data["user"]
     user = authenticate(username=user_data["login"], password=user_data["password"])
-    if user:
-        return Response({'error': 0, 'user': user_data["login"]})
-    else:
-        return Response({'error': 1, 'message': 'Invalid login or password!'})
+    response = Response(data={'user': user_data["login"]}, status=200) if user else Response(
+        data={'message': 'Invalid login or password!'}, status=401)
+    return response
 
 
 class Tweets(APIView, PageNumberPagination):
@@ -40,7 +39,7 @@ class Tweets(APIView, PageNumberPagination):
         try:
             username = request.data['input']
             if len(username) == 0:
-                return Response(status=400, data={"message": "Invalid input value"})
+                raise ValueError("Invalid input value")
 
             cache_key = 'user_tweets__' + username
             user_tweets = cache.get(cache_key)
@@ -53,6 +52,9 @@ class Tweets(APIView, PageNumberPagination):
             results = self.paginate_queryset(user_tweets, request)
             serializer = TweetsSerializer(results, many=True)
             return Response({"tweets": serializer.data, "amount": len(user_tweets), "page_size": self.page_size})
-
-        except:
-            return Response(status=500, data={"message": "Server error"})
+        except (ValueError, KeyError):
+            return Response(status=400, data={"message": "Invalid input value!"})
+        except twitter.error.TwitterError:
+            return Response(status=406, data={"message": "Not valid user!"})
+        except Exception:
+            return Response(status=500, data={"message": "Server error!"})

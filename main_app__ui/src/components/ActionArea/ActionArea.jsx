@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import {Field, reduxForm} from "redux-form";
 import styles from './ActionArea.module.css'
 import {connect} from "react-redux";
-import {setCurrentPage, setLoadingStatus} from "../../redux/twitter-reduser";
+import {setCurrentPage, setInputValue, setLoadingStatus} from "../../redux/twitter-reduser";
 
 
 class GetUserTweetsForm extends React.Component {
@@ -19,6 +19,9 @@ class GetUserTweetsForm extends React.Component {
             {...custom}
         />
     )
+    onChangeInput = (event, value) => {
+        this.props.changeInputValue(value);
+    }
     render() {
         return (
             <>
@@ -27,6 +30,7 @@ class GetUserTweetsForm extends React.Component {
                         name="username"
                         component={this.renderTextField}
                         label="Username"
+                        onChange={this.onChangeInput}
                     />
                     <div className={styles.formButton}>
                         <Button variant="contained" color="primary" type="submit" disabled={this.props.submitting}>View</Button>
@@ -40,6 +44,11 @@ class GetUserTweetsForm extends React.Component {
 const GetUserTweetsReduxForm = connect(
     state => ({
         initialValues: state.twitterPage.inputValue
+    }),
+    dispatch => ({
+        changeInputValue: (value) => {
+            dispatch(setInputValue(value));
+        }
     })
     )(reduxForm({form: 'get_tweets', enableReinitialize: true})(GetUserTweetsForm));
 
