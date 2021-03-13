@@ -5,7 +5,6 @@ import {makeStyles} from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { red } from '@material-ui/core/colors';
@@ -83,13 +82,23 @@ const TweetStyles = makeStyles((theme) => ({
     avatar: {
         backgroundColor: red[500],
     },
+    headerTitle: {
+        color: theme.palette.primary.light
+    },
     controls: {
         display: "flex",
         justifyContent: "space-between",
         margin: "auto 0 0"
     },
     control: {
-        padding: 12,
+        display: "flex",
+        padding: "16px 12px",
+        "& a":{
+            color: theme.palette.secondary.light
+        },
+        "& svg":{
+            margin: "0 4px"
+        }
     },
     content: {
         display: 'flex',
@@ -117,21 +126,19 @@ const Tweet = (props) => {
             ) : (
                 <Card className={classes.root}>
                     <CardHeader avatar={<Avatar aria-label="recipe" className={classes.avatar} src={props.user.profile_image_url_https}>R</Avatar>}
-                        title={<a href={props.user.url} target="_blank">{props.user.name}</a>}
+                        title={<a className={classes.headerTitle} href={props.user.url} target="_blank">{props.user.name}</a>}
                         subheader={props.created_at}
                     />
                     <CardContent className={classes.content}>
                         {props.media?.length &&
                         <TweetImageGallery media={props.media} setMediaAreaData={props.setMediaAreaData} />
                         }
-                        <Typography className={classes.control} variant="body2" color="textSecondary" component="p"
+                        <Typography className={classes.control} variant="body2" component="p"
                                     dangerouslySetInnerHTML={{__html:props.full_text}}>
                         </Typography>
                         <Box className={classes.controls}>
-                            <Typography>
-                                <IconButton color='secondary' disabled aria-label="add to favorites">
-                                    <FavoriteIcon />
-                                </IconButton>
+                            <Typography className={classes.control}>
+                                <FavoriteIcon color="action"/>
                                 {props.favorite_count}
                             </Typography>
                             <Typography className={classes.control}>Retweets: {props.retweet_count}</Typography>

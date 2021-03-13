@@ -19,19 +19,21 @@ const styles = (theme) => {
         justifyContent: 'space-between',
     },
     button: {
-        padding: 8,
+        padding: 4,
+        margin: 4,
         "&:hover":{
-            backgroundColor: theme.palette.warning.light,
+            backgroundColor: theme.palette.action.selected,
         }
     },
     paper: {
         width: '100%',
-        padding: 10,
+        padding: 8,
+        margin: 2,
         "&:hover":{
-            backgroundColor: theme.palette.warning.light,
+            backgroundColor: theme.palette.action.selected,
         },
         borderRadius: 4
-    }
+    },
 })};
 class HistoryData extends React.Component {
     clickOnRemoveIcon = (item) => {

@@ -40,7 +40,7 @@ const TweetsContainer = (props) => {
             {(tweets.length > 0 || props.currentPage > 1) &&
                 <div className={classes.pagination_wrapper}>
                     <Pagination count={pages_amount} page={props.currentPage} onChange={handleChange}
-                                variant="outlined" className={classes.pagination} />
+                                variant="outlined" className={classes.pagination} color="primary"/>
                 </div>
             }
 

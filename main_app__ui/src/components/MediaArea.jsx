@@ -70,7 +70,7 @@ const styles = (theme) => {
         },
         modalBackdrop: {
             "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.7) !important",
+                backgroundColor: "rgba(0, 0, 0, 0.2) !important",
             }
         }
     })
