@@ -95,7 +95,7 @@ const TweetStyles = makeStyles((theme) => ({
         padding: "16px 12px",
         "& a":{
             color: theme.palette.secondary.light,
-            marginLeft: 4,
+            display: "contents"
         },
         "& svg":{
             margin: "0 4px"
