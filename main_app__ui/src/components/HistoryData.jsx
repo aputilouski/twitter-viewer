@@ -5,11 +5,11 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import {createStyles, makeStyles, withStyles} from "@material-ui/styles";
-import Tooltip from "@material-ui/core/Tooltip";
+import {createStyles, withStyles} from "@material-ui/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {compose} from "redux";
 import {removeHistoryItem, setInputValue} from "../redux/twitter-reduser";
+import Tooltip from "@material-ui/core/Tooltip";
 
 
 const styles = (theme) => {
@@ -41,9 +41,9 @@ class HistoryData extends React.Component {
         this.props.setValue(item);
     }
     render() {
-        const { classes } = this.props;
+        const classes = this.props.classes;
         if (!this.props.history.length) {
-            return null
+            return
         }
         return (
             <Box mb={10}>

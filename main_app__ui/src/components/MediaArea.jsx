@@ -29,22 +29,36 @@ const styles = (theme) => {
             fontSize: 120,
             color: "white",
             opacity: 0.5,
+            margin: 10
+
+        },
+        arrowWrapper:{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            margin: 10,
             "&:hover": {
-                opacity: 0.95,
-                cursor: "pointer"
-            }
+                cursor: "pointer",
+                backgroundColor: "rgba(0, 0, 0, 0.05)",
+                "& $arrow": {
+                    opacity: 0.95,
+                }
+            },
         },
         slider: {
             display: "flex",
             width: "100%",
             height: "100%",
-            position: "relative"
+            position: "relative",
 
         },
         slide: {
             position: "absolute",
             height: "100%",
-
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
         },
         slideContent: {
             position: "relative",
@@ -52,6 +66,11 @@ const styles = (theme) => {
             top: "50%",
             "& img": {
                 width: "100%",
+            }
+        },
+        modalBackdrop: {
+            "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.7) !important",
             }
         }
     })
@@ -81,11 +100,15 @@ class MediaArea extends React.Component {
         const isOpen = !!this.props.mediaArea?.media;
         return (
             <>
-                <Modal open={isOpen} onClose={this.handleClose.bind(this)}>
+                <Modal open={isOpen} onClose={this.handleClose.bind(this)}
+                       BackdropProps={{className: classes.modalBackdrop}}>
                     <Container maxWidth="lg" className={classes.container}>
                         <Box className={classes.root}>
                             <Fade in={this.state.slideStatus > 0}>
-                                <Box><ArrowLeftIcon className={classes.arrow} onClick={this.prev.bind(this)}/></Box>
+                                <Box onClick={this.prev.bind(this)}
+                                     className={classes.arrowWrapper}>
+                                    <ArrowLeftIcon className={classes.arrow}/>
+                                </Box>
                             </Fade>
                             <Box className={classes.slider}>
                                 {this.props.mediaArea.media?.map((item, i) => {
@@ -107,7 +130,10 @@ class MediaArea extends React.Component {
                                 }
                             </Box>
                             <Fade in={(this.props.mediaArea?.media?.length - 1) > this.state.slideStatus}>
-                                <Box><ArrowRightIcon className={classes.arrow} onClick={this.next.bind(this)}/></Box>
+                                <Box onClick={this.next.bind(this)}
+                                     className={classes.arrowWrapper}>
+                                    <ArrowRightIcon className={classes.arrow}/>
+                                </Box>
                             </Fade>
                         </Box>
                     </Container>
