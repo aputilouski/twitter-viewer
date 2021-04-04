@@ -1,95 +1,72 @@
 import React, {useState} from "react";
 import Container from "@material-ui/core/Container";
-import styles from "./LoginPage.module.css";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import {Field, isSubmitting, reduxForm} from "redux-form";
 import {connect} from "react-redux";
-import {maxLengthCreator, minLengthCreator, required} from "../../utils/validators/validators";
-import {loginUserThunk} from "../../redux/user-reduser";
 import {Redirect} from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {initUserProfile} from "../../redux/user-reduser";
+import {createStyles, withStyles} from "@material-ui/styles";
+import {compose} from "redux";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import {AuthorizeAPI} from "../../api/authorization-api";
 
-const maxLength16 = maxLengthCreator(16);
-const minLength4 = minLengthCreator(4);
 
-const renderTextField = ({label, input, meta: {touched, invalid, error}, ...custom}) => {
-    return <TextField
-        label={label}
-        error={touched && invalid}
-        helperText={touched && error}
-        {...input}
-        {...custom}
-    />
-}
+const styles = (theme) => {
+    return createStyles({
+        root: {
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center"
+        },
+        box: {
+            textAlign: "center",
+            margin: "0 auto",
+            marginTop: "-80px",
+        },
+        h1: {
+            fontSize: "36px",
+            fontWeight: 600,
+            margin: "40px 0",
+        }
+    })
+};
 
-const LoginForm = (props) => {
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {isDisabledButton: false};
+    }
+    componentDidMount() {
+        this.props.initUserProfile()
+    }
 
-    let {handleSubmit, error} = props;
+    render() {
+        if (this.props.user.isLogin) {
+            return <Redirect to={"/main"}/>
+        }
 
-    return (
-        <div className={styles.formContainer}>
-            <div className={styles.headerContainer}>
-                <h1 className={styles.header}>
-                    TWITTER VIEWER
-                </h1>
-                {error &&
-                <div className={styles.formError}>
-                    {error}
-                </div>}
-            </div>
-            <form onSubmit={handleSubmit} className={styles.loginForm}>
-                <div className={styles.formField}>
-                    <Field
-                        name="login"
-                        component={renderTextField}
-                        label="Login"
-                        validate={[required, minLength4, maxLength16]}
-                    />
-                </div>
-                <div className={styles.formField}>
-                    <Field
-                        name="password"
-                        component={renderTextField}
-                        label="Password"
-                        type='password'
-                        validate={[required, minLength4, maxLength16]}
-                    />
-                </div>
-                <div className={`${styles.formField} ${styles.formButton}`}>
-                    <Button variant="contained" color="primary" type="submit">
-                        <span>Login</span>
-                        {props.submitting &&
-                            <span style={{display:'flex',marginLeft: 10}}>
-                                <CircularProgress  color="inherit" disableShrink size={20} thickness={5}/>
-                            </span>
-                        }
+        const classes = this.props.classes;
+        const loginWithTwitter = async () => {
+            this.setState({isDisabledButton: true});
+            await AuthorizeAPI.getTwitterAuthorizePage().then(response => {
+                if (response.data?.url)
+                    document.location.href = response.data.url
+                else throw new Error("Twitter authorize page not found.");
+            });
+            this.setState({isDisabledButton: false});
+        }
+
+        return (
+            <Container maxWidth="sm" className={classes.root}>
+                <Box className={classes.box}>
+                    <Typography variant="h1" className={classes.h1}>TWITTER VIEWER</Typography>
+                    <Button onClick={loginWithTwitter} variant="contained" color="primary" disabled={this.state.isDisabledButton}>
+                        Login with Twitter
                     </Button>
-                </div>
-            </form>
-        </div>
-    );
-}
-
-const LoginReduxForm = reduxForm({form: 'login'})(LoginForm);
-
-const LoginPage = (props) => {
-
-    if (props.user.isLogin) {
-        return <Redirect to={"/main"}/>
+                </Box>
+            </Container>
+        )
     }
-
-    const formSubmit = async (formData) => {
-        let user = {};
-        user.login = formData.login;
-        user.password = formData.password;
-        await props.loginUserThunk(user);
-    }
-    return(
-        <Container maxWidth="sm">
-            <LoginReduxForm onSubmit={formSubmit} />
-        </Container>
-    )
 }
 
 
@@ -99,8 +76,10 @@ let mapStateToProps = (state) => {
     }
 }
 let mapDispatchToProps = {
-    loginUserThunk
+    initUserProfile
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(LoginPage)
-
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withStyles(styles),
+)(Login);

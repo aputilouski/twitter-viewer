@@ -45,3 +45,16 @@ class TweetsSerializer(serializers.Serializer):
     def get_created_at(self, obj):
         dt = parse(obj.created_at).strftime("%A, %d. %B %Y %I:%M%p")
         return dt
+
+
+class ProfileSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    image = serializers.SerializerMethodField()
+    screen_name = serializers.CharField()
+    link = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        return obj.profile_image_url_https
+
+    def get_link(self, obj):
+        return "https://twitter.com/" + obj.screen_name

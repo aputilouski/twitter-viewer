@@ -1,21 +1,19 @@
 import {userAPI} from "../api/user-api";
-import {stopSubmit} from "redux-form";
-import {setAlertZoneActionCreator, setErrorMessage} from "./app-reduser";
-import {addHistoryItem, clearTweets, setTweetsActionCreator} from "./twitter-reduser";
+import {AuthorizeAPI, getAccessToken, removeAccessToken, setAccessToken} from "../api/authorization-api";
 
-const SET_USER = 'SET_USER';
+const SET_PROFILE = 'SET_PROFILE';
 
 let initialState = {
-    user: [],
+    profile: [],
     isLogin: false,
 }
 
 const UserReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_USER: {
+        case SET_PROFILE: {
             return {
                 ...state,
-                user: action.user,
+                profile: action.profile,
                 isLogin: action.isLogin
             };
         }
@@ -24,24 +22,40 @@ const UserReducer = (state = initialState, action) => {
     }
 }
 
-export const loginUserActionCreator = (user, isLogin = true) => ({type: SET_USER, user, isLogin})
+export const setProfileActionCreator = (profile, isLogin = true) => ({type: SET_PROFILE, profile, isLogin})
 
-export const loginUserThunk = (user) => async (dispatch) => {
-    return userAPI.loginUser(user).then(response => {
-        dispatch(loginUserActionCreator(user));
-    }).catch(function (error) {
-        dispatch(setAlertZoneActionCreator(setErrorMessage(error.response.data?.message || error.message)));
-        setTimeout(() => {
-            dispatch(stopSubmit("login", {_error: error.response.data?.message || error.message}));
-        });
-    });
-};
-
-export const logoutUserThunk = () => async (dispatch) => {
+export const logoutThunk = () => async (dispatch) => {
     // let response = await authAPI.logout();
     // if (response.data.resultCode === 0) {
-        dispatch(loginUserActionCreator(null, false));
+    //     dispatch(loginUserActionCreator(null, false));
     // }
+    removeAccessToken();
+    dispatch(setProfileActionCreator(null, false));
+}
+
+function refreshToken() {
+    return AuthorizeAPI.refreshToken().then((response) => {
+        if (response.data?.access_token)
+            setAccessToken(response.data.access_token)
+    });
+}
+export const initUserProfile = () => (dispatch) => {
+    if (getAccessToken()) {
+        userAPI.getUserProfile().then(response => {
+            dispatch(setProfileActionCreator(response.data.profile));
+            setInterval(() => {
+                refreshToken();
+            }, 1000*60*4);
+        }).catch(error => {
+            if (error.response.data?.detail === "access_token expired"){
+                refreshToken().then(()=>{
+                    initUserProfile();
+                });
+            } else {
+                console.error(error);
+            }
+        });
+    }
 }
 
 export default UserReducer;
