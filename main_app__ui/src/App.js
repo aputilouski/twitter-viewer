@@ -20,12 +20,10 @@ function app_preparations() {
         Cookies.remove('access_token')
     }
 }
+app_preparations();
+
 
 class App extends React.Component {
-    componentDidMount() {
-        app_preparations();
-    }
-
     render() {
         return (
             <ThemeProvider theme={theme}>

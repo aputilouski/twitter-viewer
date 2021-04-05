@@ -30,6 +30,8 @@ class SafeJWTAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed('access_token expired')
         except IndexError:
             raise exceptions.AuthenticationFailed('Token prefix missing')
+        except Exception:
+            raise Exception("Server error")
 
         user = User.objects.filter(id=payload['user_id']).first()
         if user is None:

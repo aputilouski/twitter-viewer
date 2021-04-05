@@ -13,8 +13,9 @@ export const removeAccessToken = () => {
     return localStorage.removeItem(ACCESS_TOKEN)
 }
 
-
-export let AUTHORIZATION_HEADER = {'Authorization': `Token ${getAccessToken()}`}
+export let AUTHORIZATION_HEADER = () => {
+    return {'Authorization': `Token ${getAccessToken()}`}
+}
 
 export const AuthorizeAPI = {
     getTwitterAuthorizePage() {

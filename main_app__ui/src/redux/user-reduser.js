@@ -1,5 +1,10 @@
 import {userAPI} from "../api/user-api";
-import {AuthorizeAPI, getAccessToken, removeAccessToken, setAccessToken} from "../api/authorization-api";
+import {
+    AuthorizeAPI,
+    getAccessToken,
+    removeAccessToken,
+    setAccessToken
+} from "../api/authorization-api";
 
 const SET_PROFILE = 'SET_PROFILE';
 
@@ -45,7 +50,7 @@ export const initUserProfile = () => (dispatch) => {
             dispatch(setProfileActionCreator(response.data.profile));
             setInterval(() => {
                 refreshToken();
-            }, 1000*60*4);
+            }, 1000*60*0.5);
         }).catch(error => {
             if (error.response.data?.detail === "access_token expired"){
                 refreshToken().then(()=>{
