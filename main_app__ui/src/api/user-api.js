@@ -1,10 +1,13 @@
 import instance from "./api";
-import {AUTHORIZATION_HEADER} from "./authorization-api";
+import {addAutoLogoutHandler, AUTHORIZATION_HEADER, refreshToken} from "./authorization-api";
+
 
 export const userAPI = {
-    getUserProfile() {
-        return instance.post('profile/', null, {
+    getUserProfile(dispatch, callback) {
+        const request = instance.post('profile/', null, {
             headers: {...AUTHORIZATION_HEADER()}
-        })
+        });
+        addAutoLogoutHandler(request, dispatch, callback);
+        return request;
     }
 }

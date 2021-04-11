@@ -35,13 +35,13 @@ class SafeJWTAuthentication(BaseAuthentication):
 
         user = User.objects.filter(id=payload['user_id']).first()
         if user is None:
-            raise exceptions.AuthenticationFailed('User not found')
+            raise exceptions.AuthenticationFailed('user not found')
 
         if not user.is_active:
             raise exceptions.AuthenticationFailed('user is inactive')
 
         # self.enforce_csrf(request)
-        return (user, None)
+        return user, None
 
     # def enforce_csrf(self, request):
     #     """

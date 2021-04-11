@@ -17,11 +17,9 @@ import dotenv
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-LOCAL_ENVIRONMENT = False
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
-    LOCAL_ENVIRONMENT = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -31,7 +29,7 @@ SECRET_KEY = 'zy94!b-^9x*1o480t*08^@$8(y48o8=d2u%e_pu6brx8s(*p!p'
 REFRESH_TOKEN_SECRET = 'zy94!b-^9x*1o480t*08^@$8(y48o8=d2u%e_pu6brx8s(*p!p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = LOCAL_ENVIRONMENT
+DEBUG = bool(os.environ.get("DEBUG")) or False
 
 ALLOWED_HOSTS = ['*']
 
@@ -144,7 +142,5 @@ STATICFILES_DIRS = (
 )
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "https://twitter-viewer001.herokuapp.com",
+    os.environ.get("ALLOWED_ORIGIN") or "https://twitter-viewer001.herokuapp.com",
 ]
-

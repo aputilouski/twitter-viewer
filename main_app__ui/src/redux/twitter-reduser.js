@@ -91,7 +91,7 @@ export const setCurrentPage = (value) => ({type: SET_CURRENT_PAGE, value})
 
 
 export const getTweetsTHUNK = (currentPage, input) => (dispatch) => {
-   return tweetsAPI.getTweets(currentPage, input).then(response => {
+   return tweetsAPI.getTweets(dispatch, currentPage, input).then(response => {
        dispatch(setTweetsActionCreator(response.data));
        dispatch(addHistoryItem(input));
     }).catch(function(error) {

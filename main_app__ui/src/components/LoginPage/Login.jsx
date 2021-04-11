@@ -3,12 +3,11 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {initUserProfile} from "../../redux/user-reduser";
+import {getTwitterAuthorizePage, initUserProfile} from "../../redux/user-reduser";
 import {createStyles, withStyles} from "@material-ui/styles";
 import {compose} from "redux";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import {AuthorizeAPI} from "../../api/authorization-api";
 
 
 const styles = (theme) => {
@@ -48,11 +47,7 @@ class Login extends React.Component {
         const classes = this.props.classes;
         const loginWithTwitter = async () => {
             this.setState({isDisabledButton: true});
-            await AuthorizeAPI.getTwitterAuthorizePage().then(response => {
-                if (response.data?.url)
-                    document.location.href = response.data.url
-                else throw new Error("Twitter authorize page not found.");
-            });
+            await getTwitterAuthorizePage();
             this.setState({isDisabledButton: false});
         }
 
