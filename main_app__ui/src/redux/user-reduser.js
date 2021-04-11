@@ -35,14 +35,15 @@ export const getTwitterAuthorizePage = () => (dispatch) => {
     return AuthorizeAPI.getTwitterAuthorizePage().then(response => {
         if (response.data?.url)
             document.location.href = response.data.url
-        else dispatch(setAlertZoneActionCreator(setErrorMessage(DEFAULT_SERVER_ERROR_MESSAGE)));
-
+        else throw new Error();
+    }).catch(error => {
+        dispatch(setAlertZoneActionCreator(setErrorMessage(DEFAULT_SERVER_ERROR_MESSAGE)));
     });
 }
 
 let timerId = null;
 
-export const initUserProfile = () => (dispatch) => {
+export const initUserProfile = (dispatch) => {
     if (getAccessToken()) {
         userAPI.getUserProfile(dispatch, initUserProfile).then(response => {
             dispatch(setProfileActionCreator(response.data.profile));

@@ -36,7 +36,7 @@ class Login extends React.Component {
         this.state = {isDisabledButton: false};
     }
     componentDidMount() {
-        this.props.initUserProfile()
+        this.props.initUserProfile();
     }
 
     render() {
@@ -47,7 +47,7 @@ class Login extends React.Component {
         const classes = this.props.classes;
         const loginWithTwitter = async () => {
             this.setState({isDisabledButton: true});
-            await getTwitterAuthorizePage();
+            await this.props.getAuthorizePage()();
             this.setState({isDisabledButton: false});
         }
 
@@ -70,9 +70,14 @@ let mapStateToProps = (state) => {
         user: state.user
     }
 }
-let mapDispatchToProps = {
-    initUserProfile
-}
+const mapDispatchToProps = (dispatch) => ({
+    getAuthorizePage: () => {
+        return getTwitterAuthorizePage(dispatch);
+    },
+    initUserProfile: () => {
+        initUserProfile(dispatch);
+    }
+});
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
