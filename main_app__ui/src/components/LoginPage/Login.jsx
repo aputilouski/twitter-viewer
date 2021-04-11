@@ -8,6 +8,8 @@ import {createStyles, withStyles} from "@material-ui/styles";
 import {compose} from "redux";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import {getAccessToken} from "../../api/authorization-api";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 const styles = (theme) => {
@@ -33,10 +35,18 @@ const styles = (theme) => {
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {isDisabledButton: false};
+        this.state = {
+            isDisabledButton: false,
+            isInitializationProfileAction: false,
+        };
     }
     componentDidMount() {
-        this.props.initUserProfile();
+        if (getAccessToken()) {
+            this.setState({isInitializationProfileAction: true});
+            this.props.initUserProfile().catch(err => {
+                this.setState({isInitializationProfileAction: false});
+            });
+        }
     }
 
     render() {
@@ -54,10 +64,17 @@ class Login extends React.Component {
         return (
             <Container maxWidth="sm" className={classes.root}>
                 <Box className={classes.box}>
-                    <Typography variant="h1" className={classes.h1}>TWITTER VIEWER</Typography>
-                    <Button onClick={loginWithTwitter} variant="contained" color="primary" disabled={this.state.isDisabledButton}>
-                        Login with Twitter
-                    </Button>
+                    {this.state.isInitializationProfileAction &&
+                        <CircularProgress />
+                    }
+                    {!this.state.isInitializationProfileAction &&
+                        <>
+                            <Typography variant="h1" className={classes.h1}>TWITTER VIEWER</Typography>
+                            <Button onClick={loginWithTwitter} variant="contained" color="primary" disabled={this.state.isDisabledButton}>
+                                Login with Twitter
+                            </Button>
+                        </>
+                    }
                 </Box>
             </Container>
         )
@@ -75,7 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
         return getTwitterAuthorizePage(dispatch);
     },
     initUserProfile: () => {
-        initUserProfile(dispatch);
+        return initUserProfile(dispatch);
     }
 });
 

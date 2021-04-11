@@ -44,16 +44,14 @@ export const getTwitterAuthorizePage = () => (dispatch) => {
 let timerId = null;
 
 export const initUserProfile = (dispatch) => {
-    if (getAccessToken()) {
-        userAPI.getUserProfile(dispatch, initUserProfile).then(response => {
-            dispatch(setProfileActionCreator(response.data.profile));
-            if (timerId)
-                clearInterval(timerId);
-            timerId = setInterval(() => {
-                refreshToken(dispatch);
-            }, 1000*60*4);
-        });
-    }
+    return userAPI.getUserProfile(dispatch, initUserProfile).then(response => {
+        dispatch(setProfileActionCreator(response.data.profile));
+        if (timerId)
+            clearInterval(timerId);
+        timerId = setInterval(() => {
+            refreshToken(dispatch);
+        }, 1000*60*4);
+    });
 }
 
 export default UserReducer;
