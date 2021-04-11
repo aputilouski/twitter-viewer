@@ -39,7 +39,12 @@ const TweetImageGalleryStyles = makeStyles((theme) => ({
         width: "100%",
         height: "100%",
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        '&:hover': {
+            '& $videoIcon': {
+                color: theme.palette.secondary.light
+            },
+        }
     },
     videoIcon: {
         display: "flex",
