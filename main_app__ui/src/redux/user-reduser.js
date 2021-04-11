@@ -50,7 +50,7 @@ export const initUserProfile = () => (dispatch) => {
                 clearInterval(timerId);
             timerId = setInterval(() => {
                 refreshToken(dispatch);
-            }, 1000*60*0.5);
+            }, 1000*60*4);
         });
     }
 }
