@@ -1,1 +1,1 @@
-web: cd twitter_viewer && gunicorn twitter_viewer.wsgi --log-file -
+web: cd backend && gunicorn backend.wsgi --log-file -
