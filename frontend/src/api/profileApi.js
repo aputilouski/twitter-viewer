@@ -1,9 +1,14 @@
 import instance from "./_instance";
+import addResponseHandler from "../utils/ResponseHandler";
 
 
 const profileApi = {
     getUserProfile() {
-        return instance().post('profile/');
+        const requestThunk = () => {
+            return instance().post('profile/');
+        }
+
+        return addResponseHandler(requestThunk)
     }
 }
 

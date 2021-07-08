@@ -6,7 +6,6 @@ import Login from "./components/LoginPage/Login";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
 import Cookies from 'js-cookie';
 import BaseTemplate from "./components/BasePages/BaseTemplate";
-import AccessToken from "./utils/AccessToken";
 
 
 const theme = createMuiTheme({});
@@ -20,7 +19,6 @@ class App extends React.Component {
             localStorage.setItem('access_token', access_token);
             Cookies.remove('access_token')
         }
-        AccessToken.value = AccessToken.getAccessToken();
     }
     render() {
         return (

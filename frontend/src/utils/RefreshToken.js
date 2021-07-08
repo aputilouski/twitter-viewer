@@ -7,9 +7,9 @@ import ProfileManager from "../redux/profileManager";
 const refreshToken = function () {
     return AuthorizationAPI.refreshToken().then(
         (response) => {
-            if (response.data?.access_token)
-                AccessToken.setAccessToken(response.data.access_token)
-            return response
+            if (response.data?.access_token) {
+                AccessToken.setAccessToken(response.data.access_token);
+            } else throw Error("No access token!");
         },
         (error) => {
             if (error.response.status === 403)

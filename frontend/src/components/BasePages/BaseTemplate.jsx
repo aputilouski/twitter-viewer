@@ -14,8 +14,7 @@ import AccessToken from "../../utils/AccessToken";
 
 class BaseTemplate extends React.Component {
     componentDidMount() {
-
-        if (AccessToken.getAccessToken()) {
+        if (AccessToken.value) {
             this.setState({isInitializationProfileAction: true});
             this.props.initUserProfile().catch(err => {
                 this.setState({isInitializationProfileAction: false});

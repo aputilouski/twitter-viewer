@@ -5,6 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import 'fontsource-roboto';
 
+import {initAccessToken} from "./utils/AccessToken";
+initAccessToken();
+
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
