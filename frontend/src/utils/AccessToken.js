@@ -11,6 +11,7 @@ let AccessToken = {
         localStorage.setItem(ACCESS_TOKEN, token);
     },
     removeAccessToken: () => {
+        AccessToken.value = null;
         return localStorage.removeItem(ACCESS_TOKEN)
     },
 }

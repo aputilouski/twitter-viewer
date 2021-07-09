@@ -2,7 +2,6 @@ import React from "react";
 import {Provider} from "react-redux";
 import store from "./redux/_store";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import Login from "./components/LoginPage/Login";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
 import Cookies from 'js-cookie';
 import BaseTemplate from "./components/BasePages/BaseTemplate";
@@ -27,10 +26,7 @@ class App extends React.Component {
                     <Provider store={store}>
                         <Switch>
                             <Route exact path='/'
-                                   render={() => <Redirect to={"/login"}/>}/>
-
-                            <Route path="/login"
-                                   render={() => <Login/>}/>
+                                   render={() => <Redirect to={"/main"}/>}/>
 
                             <Route render={() => <BaseTemplate/>}/>
                         </Switch>

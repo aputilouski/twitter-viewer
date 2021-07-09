@@ -1,7 +1,7 @@
 import AuthorizationAPI from "../api/authorizationApi";
 import AccessToken from "./AccessToken";
 import store from "../redux/_store";
-import ProfileManager from "../redux/profileManager";
+import ProfileManager from "../redux/profileReducer/profileManager";
 
 
 const refreshToken = function () {

@@ -4,8 +4,8 @@ import ActionArea from "./_components/ActionArea";
 import HistoryData from "./_components/HistoryData";
 import MediaArea from "./_components/MediaArea";
 import {connect} from "react-redux";
-import ViewerManager from "../../../redux/viewerManager";
-import actions from "../../../redux/viewerActions";
+import ViewerManager from "../../../redux/viewerReducer/viewerManager";
+import actions from "../../../redux/viewerReducer/viewerActions";
 
 
 const ViewerPage = (props) => {

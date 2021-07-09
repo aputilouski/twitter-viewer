@@ -1,10 +1,10 @@
 import store from "../redux/_store";
-import {CreateAlertAction, DefaultMessages} from "../redux/appReducer";
+import actions, {DefaultMessages} from "../redux/appReducer/appActions";
 import refreshToken from "./RefreshToken";
 
 
 const showAlert = (message) => {
-    store.dispatch(CreateAlertAction.setAlertZoneErrorMessage(message));
+    store.dispatch(actions.__create_action.setAlertZoneErrorMessage(message));
 }
 
 
@@ -40,17 +40,15 @@ function addResponseHandler(callback) {
                             showAlert();
                             reject(error);
                     }
+                } else if (error.response?.status === 500) {
+                    showAlert(error.response?.data?.message);
+                    reject(error);
+                } else if (!error.response) {
+                    showAlert(DefaultMessages.INTERNET_CONNECTION_ERROR_MESSAGE);
+                    reject(error);
                 } else {
                     reject(error);
                 }
-
-
-                // else if (error.response?.status === 500) {
-                //     showAlert(error.response?.data?.message);
-                // } else if (!error.response) {
-                //     showAlert(DefaultMessages.INTERNET_CONNECTION_ERROR_MESSAGE);
-                // }
-
 
             });
     });

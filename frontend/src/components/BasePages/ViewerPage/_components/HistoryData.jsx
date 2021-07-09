@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Grid, Paper, Box, Typography, IconButton, Tooltip} from "@material-ui/core";
+import {Grid, Paper, Box, Typography, IconButton} from "@material-ui/core";
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import {createStyles, withStyles} from "@material-ui/styles";
 import {compose} from "redux";
-import actions from "../../../../redux/viewerActions";
+import actions from "../../../../redux/viewerReducer/viewerActions";
 
 
 const styles = (theme) => {
@@ -26,6 +26,7 @@ const styles = (theme) => {
         margin: 2,
         "&:hover":{
             backgroundColor: theme.palette.action.selected,
+            cursor: "pointer"
         },
         borderRadius: 4
     },
@@ -53,11 +54,9 @@ class HistoryData extends React.Component {
                                 <Box className={classes.paper} onClick={this.clickOnPaper.bind(this, item)}>
                                     <Typography variant='body2'>{item}</Typography>
                                 </Box>
-                                <Tooltip title="Delete">
-                                    <IconButton aria-label="delete" className={classes.button} onClick={this.clickOnRemoveIcon.bind(this, item)}>
-                                        <HighlightOffIcon/>
-                                    </IconButton>
-                                </Tooltip>
+                                <IconButton aria-label="delete" className={classes.button} onClick={this.clickOnRemoveIcon.bind(this, item)}>
+                                    <HighlightOffIcon/>
+                                </IconButton>
                             </Paper>
                         </Grid>
                     ))

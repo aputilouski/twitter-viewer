@@ -1,9 +1,21 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Container, Avatar, Box, Link, Tabs, Tab } from "@material-ui/core";
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    Container,
+    Avatar,
+    Box,
+    Link,
+    Tabs,
+    Tab,
+    Tooltip, CircularProgress
+} from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {connect} from "react-redux";
 import { useHistory } from "react-router-dom";
-import ProfileManager from "../../../redux/profileManager";
+import ProfileManager from "../../../redux/profileReducer/profileManager";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +45,7 @@ const Header = (props) => {
     }
 
     const [value, setValue] = React.useState(PageID);
+    const [isDisabledLoginButton, disableLoginButton] = React.useState(false);
 
 
     const handleChange = (event, newValue) => {
@@ -50,8 +63,11 @@ const Header = (props) => {
     };
 
 
-    const login = () => {
-        history.push('/login');
+    const login = async () => {
+        if (isDisabledLoginButton) return;
+        disableLoginButton(true);
+        await props.login();
+        disableLoginButton(false);
     }
 
     return (
@@ -76,18 +92,26 @@ const Header = (props) => {
                     <Toolbar>
                         {
                             props.profile &&
-                            <>
-                                <Avatar src={props.profile.image} />
-                                <Box className={classes.profile_data}>
-                                    <Typography variant="body2">{props.profile.name}</Typography>
-                                    <Link color="inherit" target="_blank" href={props.profile.link}>{props.profile.screen_name}</Link>
-                                </Box>
-                                <Button onClick={props.logout} color="inherit">Logout</Button>
-                            </>
+                                <>
+                                    <Avatar src={props.profile.image} />
+                                    <Box className={classes.profile_data}>
+                                        <Typography variant="body2">{props.profile.name}</Typography>
+                                        <Link color="inherit" target="_blank" href={props.profile.link}>{props.profile.screen_name}</Link>
+                                    </Box>
+                                    <Button onClick={props.logout} color="inherit">Logout</Button>
+                                </>
                         }
                         {
-                            !props.profile && <Button onClick={login} color="inherit">Login</Button>
+                        !props.profile &&
+                            <Tooltip title="Twitter authentication">
+                                <Button onClick={login} color="inherit">
+                                    {
+                                        !isDisabledLoginButton ? <>Login</> : <CircularProgress size={20} color="inherit" />
+                                    }
+                                </Button>
+                            </Tooltip>
                         }
+
                     </Toolbar>
                 </Toolbar>
             </Container>
@@ -102,6 +126,14 @@ const mapStateToProps = (state) => {
         profile: state.user.profile,
     }
 };
+const mapDispatchToProps = (dispatch) => ({
+    login: () => {
+        return dispatch(ProfileManager.getTwitterAuthorizePage());
+    },
+    logout: () => {
+        dispatch(ProfileManager.logout());
+    }
+});
 
 
-export default connect(mapStateToProps, {logout: ProfileManager.logout})(Header);
+export default connect(mapStateToProps,mapDispatchToProps)(Header);

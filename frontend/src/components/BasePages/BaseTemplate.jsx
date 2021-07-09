@@ -6,7 +6,7 @@ import Container from "@material-ui/core/Container";
 import AboutPage from "./AboutPage/AboutPage";
 import ViewerPage from "./ViewerPage/ViewerPage";
 import AlertZone from "./_components/AlertZone";
-import ProfileManager from "../../redux/profileManager";
+import ProfileManager from "../../redux/profileReducer/profileManager";
 import AccessToken from "../../utils/AccessToken";
 
 // import AuthChecker from "../hoc/AuthChecker";

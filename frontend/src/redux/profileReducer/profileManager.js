@@ -1,8 +1,7 @@
-import AuthorizationAPI from "../api/authorizationApi";
-import {CreateAlertAction} from "./appReducer";
-import profileApi from "../api/profileApi";
-import refreshToken from "../utils/RefreshToken";
-import AccessToken from "../utils/AccessToken";
+import AuthorizationAPI from "../../api/authorizationApi";
+import profileApi from "../../api/profileApi";
+import refreshToken from "../../utils/RefreshToken";
+import AccessToken from "../../utils/AccessToken";
 import actions from "./profileActions";
 
 
@@ -13,8 +12,6 @@ export const ProfileManager = {
             if (response.data?.url)
                 document.location.href = response.data.url
             else throw new Error();
-        }).catch(error => {
-            dispatch(CreateAlertAction.setAlertZoneErrorMessage());
         });
     },
     initUserProfile: () => (dispatch) => {

@@ -5,7 +5,7 @@ import {Field, reduxForm} from "redux-form";
 import {connect} from "react-redux";
 import {createStyles, withStyles} from "@material-ui/styles";
 import {compose} from "redux";
-import actions from "../../../../redux/viewerActions";
+import actions from "../../../../redux/viewerReducer/viewerActions";
 
 
 const styles = (theme) => {

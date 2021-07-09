@@ -4,7 +4,7 @@ import {Grid} from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import {makeStyles} from "@material-ui/styles";
 import Tweet from "./Tweet";
-import actions from "../../../../redux/viewerActions";
+import actions from "../../../../redux/viewerReducer/viewerActions";
 
 
 const styles = makeStyles((theme) => ({

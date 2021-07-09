@@ -1,4 +1,4 @@
-import viewerAPI from "../api/viewerApi";
+import viewerAPI from "../../api/viewerApi";
 import actions from "./viewerActions";
 
 

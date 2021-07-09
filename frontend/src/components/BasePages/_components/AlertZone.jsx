@@ -2,7 +2,7 @@ import React from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import {connect} from "react-redux";
-import {CreateAlertAction} from "../../../redux/appReducer";
+import actions from "../../../redux/appReducer/appActions"
 
 
 const AlertZone = (props) => {
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
     disableAlertZone: () => {
-        dispatch(CreateAlertAction.disableAlertZone());
+        dispatch(actions.__create_action.disableAlertZone());
     },
 });
 

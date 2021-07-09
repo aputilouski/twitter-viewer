@@ -1,9 +1,9 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
 import thunkMiddleware from "redux-thunk";
 import { reducer as formReducer } from 'redux-form'
-import ProfileReducer from "./profileReducer";
-import AppReducer from "./appReducer";
-import ViewerReducer from "./viewerReducer";
+import ProfileReducer from "./profileReducer/profileReducer";
+import AppReducer from "./appReducer/appReducer";
+import ViewerReducer from "./viewerReducer/viewerReducer";
 
 
 let reducers = combineReducers({
