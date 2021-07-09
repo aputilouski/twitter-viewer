@@ -14,8 +14,10 @@ const styles = (theme) => {
         justifyContent: 'space-between',
     },
     button: {
-        padding: 4,
-        margin: 4,
+        padding: 0,
+        margin: 0,
+        width: 36,
+        borderRadius: 4,
         "&:hover":{
             backgroundColor: theme.palette.action.selected,
         }
@@ -23,7 +25,7 @@ const styles = (theme) => {
     paper: {
         width: '100%',
         padding: 8,
-        margin: 2,
+        margin: 0,
         "&:hover":{
             backgroundColor: theme.palette.action.selected,
             cursor: "pointer"

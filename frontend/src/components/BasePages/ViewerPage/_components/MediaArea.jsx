@@ -25,7 +25,9 @@ const styles = (theme) => {
             fontSize: 120,
             color: "white",
             opacity: 0.5,
-            margin: 10
+            margin: 10,
+            borderRadius: '50%',
+            backgroundColor: "rgba(0, 0, 0, 0.15)"
 
         },
         arrowWrapper:{
@@ -35,7 +37,6 @@ const styles = (theme) => {
             margin: 10,
             "&:hover": {
                 cursor: "pointer",
-                backgroundColor: "rgba(0, 0, 0, 0.05)",
                 "& $arrow": {
                     opacity: 0.95,
                 }
@@ -66,7 +67,7 @@ const styles = (theme) => {
         },
         modalBackdrop: {
             "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.2) !important",
+                backgroundColor: "rgba(0, 0, 0, 0.6) !important",
             }
         }
     })

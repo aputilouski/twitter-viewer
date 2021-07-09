@@ -1,10 +1,22 @@
 import React from 'react';
-import {GridList, GridListTile, Card, CardHeader, Avatar, CardContent, Typography, Box} from "@material-ui/core";
+import {
+    GridList,
+    GridListTile,
+    Card,
+    CardHeader,
+    Avatar,
+    CardContent,
+    Typography,
+    Box,
+    Tooltip
+} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Skeleton from '@material-ui/lab/Skeleton';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+
 
 const TweetImageGalleryStyles = makeStyles((theme) => ({
     root: {
@@ -71,6 +83,7 @@ const TweetImageGallery = (props) => {
     );
 }
 
+
 const TweetStyles = makeStyles((theme) => ({
     root: {
         height: '100%',
@@ -92,7 +105,7 @@ const TweetStyles = makeStyles((theme) => ({
         display: "flex",
         padding: "16px 12px",
         "& a":{
-            color: theme.palette.secondary.light,
+            color: theme.palette.primary.light,
             display: "contents"
         },
         "& svg":{
@@ -102,7 +115,14 @@ const TweetStyles = makeStyles((theme) => ({
     content: {
         display: 'flex',
         flexDirection: 'column',
-        height: '100%'
+        height: '100%',
+        opacity: 0.85
+    },
+    counters: {
+        color: theme.palette.text.secondary,
+    },
+    tooltip: {
+        margin: -6,
     }
 
 }));
@@ -136,11 +156,18 @@ const Tweet = (props) => {
                                     dangerouslySetInnerHTML={{__html:props.full_text}}>
                         </Typography>
                         <Box className={classes.controls}>
-                            <Typography className={classes.control}>
-                                <FavoriteIcon color="action"/>
-                                {props.favorite_count}
-                            </Typography>
-                            <Typography className={classes.control}>Retweets: {props.retweet_count}</Typography>
+                            <Tooltip title="Like" classes={{tooltip: classes.tooltip}}>
+                                <Typography className={[classes.control, classes.counters]}>
+                                    <FavoriteBorderIcon />
+                                    {props.favorite_count}
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Retweet" classes={{tooltip: classes.tooltip}}>
+                                <Typography className={[classes.control, classes.counters]}>
+                                    <ArrowDownwardIcon />
+                                    {props.retweet_count}
+                                </Typography>
+                            </Tooltip>
                         </Box>
                     </CardContent>
                 </Card>

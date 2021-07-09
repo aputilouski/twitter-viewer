@@ -10,7 +10,7 @@ import {
     Link,
     Tabs,
     Tab,
-    Tooltip, CircularProgress
+    Tooltip, CircularProgress, Fade
 } from "@material-ui/core";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {connect} from "react-redux";
@@ -24,13 +24,18 @@ const useStyles = makeStyles((theme) => ({
     },
     profile_data: {
         margin: "0 40px 0 10px",
+    },
+    loginTooltip : {
+        margin: 0,
     }
 }));
+
 
 const HeaderMenuButtons = [
     {id: 0, name: 'Main', path: '/main'},
     {id: 1, name: 'About', path: '/about'},
 ]
+
 
 const Header = (props) => {
     const classes = useStyles();
@@ -103,7 +108,7 @@ const Header = (props) => {
                         }
                         {
                         !props.profile &&
-                            <Tooltip title="Twitter authentication">
+                            <Tooltip title="Twitter authentication" classes={{tooltip: classes.loginTooltip}} TransitionComponent={Fade} leaveDelay={200}>
                                 <Button onClick={login} color="inherit">
                                     {
                                         !isDisabledLoginButton ? <>Login</> : <CircularProgress size={20} color="inherit" />
