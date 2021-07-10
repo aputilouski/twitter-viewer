@@ -5,14 +5,13 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from rest_framework import exceptions
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from requests_oauthlib import OAuth1Session
 
 from .models import twitterRequestTokens, twitterAccessTokens
 from .utils import generate_access_token, generate_refresh_token
+from backend.settings import CLIENT_KEY, CLIENT_SECRET_KEY
 
-CLIENT_KEY = ''
-CLIENT_SECRET_KEY = ''
 
 REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token"
 BASE_AUTHORIZATION_URL = "https://api.twitter.com/oauth/authorize"

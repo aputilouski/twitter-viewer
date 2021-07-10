@@ -1,30 +1,23 @@
 # Create your views here.
-
 import twitter
 from django.core.cache import cache
-from django.http import HttpResponse
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
+
 from .serializers import TweetsSerializer, ProfileSerializer
-
-# Create your views here.
 from authorization.models import twitterAccessTokens
-
-API_KEY = ''
-API_SECRET_KEY = ''
-DEFAULT_ACCESS_TOKEN = ''
-DEFAULT_ACCESS_TOKEN_SECRET = ''
+from backend.settings import CLIENT_KEY, CLIENT_SECRET_KEY, DEFAULT_ACCESS_TOKEN, DEFAULT_ACCESS_TOKEN_SECRET
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def profile(request):
     user = request.user
-    api = twitter.Api(consumer_key=API_KEY,
-                      consumer_secret=API_SECRET_KEY,
+    api = twitter.Api(consumer_key=CLIENT_KEY,
+                      consumer_secret=CLIENT_SECRET_KEY,
                       access_token_key=user.twitter_access.oauth_token,
                       access_token_secret=user.twitter_access.oauth_token_secret)
     profile = api.GetUser(screen_name=user.username)
@@ -36,8 +29,8 @@ def load_tweets(input, user):
     cache_key = 'user_tweets__' + input
     user_tweets = cache.get(cache_key)
     if not user_tweets:
-        api = twitter.Api(consumer_key=API_KEY,
-                          consumer_secret=API_SECRET_KEY,
+        api = twitter.Api(consumer_key=CLIENT_KEY,
+                          consumer_secret=CLIENT_SECRET_KEY,
                           access_token_key=user.twitter_access.oauth_token,
                           access_token_secret=user.twitter_access.oauth_token_secret,
                           tweet_mode='extended')
@@ -59,7 +52,6 @@ class LoadTweets(APIView, PageNumberPagination):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
-        # return Response(status=403)
 
         try:
             username = request.query_params.get('input')
@@ -69,7 +61,6 @@ class LoadTweets(APIView, PageNumberPagination):
 
             if request.user.is_anonymous:
                 set_default_tokens(request.user)
-                # print(request.user.twitter_access)
 
             loaded_tweets = load_tweets(username, request.user)
 

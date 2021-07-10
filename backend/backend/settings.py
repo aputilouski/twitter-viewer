@@ -15,8 +15,13 @@ if os.path.isfile(dotenv_file):
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zy94!b-^9x*1o480t*08^@$8(y48o8=d2u%e_pu6brx8s(*p!p'
-REFRESH_TOKEN_SECRET = 'zy94!b-^9x*1o480t*08^@$8(y48o8=d2u%e_pu6brx8s(*p!p'
+SECRET_KEY='zy94!b-^9x*1o480t*08^@$8(y48o8=d2u%e_pu6brx8s(*p!p'
+REFRESH_TOKEN_SECRET=os.environ.get("REFRESH_TOKEN_SECRET")
+CLIENT_KEY = os.environ.get("CLIENT_KEY")
+CLIENT_SECRET_KEY =  os.environ.get("CLIENT_SECRET_KEY")
+DEFAULT_ACCESS_TOKEN =  os.environ.get("DEFAULT_ACCESS_TOKEN")
+DEFAULT_ACCESS_TOKEN_SECRET =  os.environ.get("DEFAULT_ACCESS_TOKEN_SECRET")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG")) or False

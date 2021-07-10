@@ -6,6 +6,10 @@ import {connect} from "react-redux";
 import {createStyles, withStyles} from "@material-ui/styles";
 import {compose} from "redux";
 import actions from "../../../../redux/viewerReducer/viewerActions";
+import {maxLengthCreator, required} from "../../../../utils/validators/validators";
+
+
+const maxLength16 = maxLengthCreator(16);
 
 
 const styles = (theme) => {
@@ -47,9 +51,10 @@ const GetUserTweetsForm = withStyles(styles)(class extends React.Component {
                         component={this.renderTextField}
                         label="Username"
                         onChange={this.onChangeInput}
+                        validate={[required, maxLength16]}
                     />
                     <div className={classes.formButton}>
-                        <Button variant="contained" color="primary" type="submit" disabled={this.props.submitting}>View</Button>
+                        <Button variant="contained" color="primary" type="submit" disabled={this.props.submitting}>View timeline</Button>
                     </div>
                 </form>
             </>
