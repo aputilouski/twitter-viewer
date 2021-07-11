@@ -51,7 +51,7 @@ class HistoryData extends React.Component {
             <Box mb={10}>
                 <Grid container spacing={2}>
                     {this.props.history.map((item) => (
-                        <Grid item xs={2} key={item}>
+                        <Grid item sm={4} lg={2} key={item}>
                             <Paper className={classes.root}>
                                 <Box className={classes.paper} onClick={this.clickOnPaper.bind(this, item)}>
                                     <Typography variant='body2'>{item}</Typography>

@@ -20,7 +20,7 @@ const styles = makeStyles((theme) => ({
 const TweetsContainer = (props) => {
     const classes = styles();
     const tweets = props.tweets.map(
-        tweet => <Grid key={tweet.id} item xs={4}>
+        tweet => <Grid key={tweet.id} item xs={12} md={6} lg={4}>
             <Tweet isLoading={props.isLoading}
                    setMediaAreaData={props.setMediaAreaData}
                    {...tweet} />

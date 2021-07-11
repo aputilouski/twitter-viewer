@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from "react-redux";
-import {Modal, Container, Slide, Box, Fade} from "@material-ui/core";
+import {Modal, Container, Slide, Box, Fade, Backdrop} from "@material-ui/core";
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import {createStyles, withStyles} from "@material-ui/styles";
@@ -26,8 +26,11 @@ const styles = (theme) => {
             color: "white",
             opacity: 0.5,
             margin: 10,
-            borderRadius: '50%',
-            backgroundColor: "rgba(0, 0, 0, 0.15)"
+            [theme.breakpoints.down('xs')]: {
+                margin: 0,
+                fontSize: 80,
+                opacity: 0.9,
+            },
 
         },
         arrowWrapper:{
@@ -40,6 +43,12 @@ const styles = (theme) => {
                 "& $arrow": {
                     opacity: 0.95,
                 }
+            },
+            [theme.breakpoints.down('xs')]: {
+                height: "50%",
+                margin: 0,
+                position: 'absolute',
+                zIndex: 100,
             },
         },
         slider: {
@@ -66,12 +75,25 @@ const styles = (theme) => {
             }
         },
         modalBackdrop: {
+            [theme.breakpoints.down('xs')]: {
+                zIndex: 10,
+                backgroundColor: "rgba(0, 0, 0, 0)",
+            },
             "&:hover": {
-                backgroundColor: "rgba(0, 0, 0, 0.6) !important",
-            }
+                backgroundColor: "rgba(0, 0, 0, 0.6)",
+            },
         }
     })
 }
+
+
+const CustomBackdrop = withStyles(styles)(class extends React.Component {
+    render() {
+        const { classes } = this.props;
+        return <Backdrop {...this.props} classes={{root: classes.modalBackdrop}} />
+    }
+})
+
 
 class MediaArea extends React.Component {
     constructor(props) {
@@ -97,13 +119,16 @@ class MediaArea extends React.Component {
         const isOpen = !!this.props.mediaArea?.media;
         return (
             <>
-                <Modal open={isOpen} onClose={this.handleClose.bind(this)}
-                       BackdropProps={{className: classes.modalBackdrop}}>
+                <Modal open={isOpen}
+                       onClose={this.handleClose.bind(this)}
+                       BackdropComponent={CustomBackdrop}
+                >
                     <Container maxWidth="lg" className={classes.container}>
                         <Box className={classes.root}>
                             <Fade in={this.state.slideStatus > 0}>
                                 <Box onClick={this.prev.bind(this)}
-                                     className={classes.arrowWrapper}>
+                                     className={classes.arrowWrapper}
+                                     style={{left: 0}}>
                                     <ArrowLeftIcon className={classes.arrow}/>
                                 </Box>
                             </Fade>
@@ -128,7 +153,8 @@ class MediaArea extends React.Component {
                             </Box>
                             <Fade in={(this.props.mediaArea?.media?.length - 1) > this.state.slideStatus}>
                                 <Box onClick={this.next.bind(this)}
-                                     className={classes.arrowWrapper}>
+                                     className={classes.arrowWrapper}
+                                     style={{right: 0}}>
                                     <ArrowRightIcon className={classes.arrow}/>
                                 </Box>
                             </Fade>

@@ -19,8 +19,17 @@ const styles = (theme) => {
             justifyContent: 'center',
             margin: '40px 0'
         },
+        formElements: {
+            [theme.breakpoints.down('xs')]: {
+                width: '60%',
+            },
+        },
         formButton: {
-            margin: '10px 10px 10px 30px'
+            margin: '10px 10px 10px 30px',
+            [theme.breakpoints.down('xs')]: {
+                width: '40%',
+                margin: '14px 0 0 24px',
+            },
         },
     })
 };
@@ -52,9 +61,13 @@ const GetUserTweetsForm = withStyles(styles)(class extends React.Component {
                         label="Username"
                         onChange={this.onChangeInput}
                         validate={[required, maxLength16]}
+                        className={classes.formElements}
                     />
                     <div className={classes.formButton}>
-                        <Button variant="contained" color="primary" type="submit" disabled={this.props.submitting}>View timeline</Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit" disabled={this.props.submitting}>View timeline</Button>
                     </div>
                 </form>
             </>

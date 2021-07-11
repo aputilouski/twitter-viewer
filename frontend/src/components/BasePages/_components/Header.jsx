@@ -22,6 +22,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
+    font_size: {
+        [theme.breakpoints.down('xs')]: {
+            fontSize: '0.8rem',
+            lineHeight: 1.2,
+        },
+    },
     profile_data: {
         margin: "0 40px 0 10px",
     },
@@ -79,7 +85,7 @@ const Header = (props) => {
         <AppBar position="static">
             <Container maxWidth="lg">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.root}>TWITTER VIEWER</Typography>
+                    <Typography variant="h6" className={[classes.root, classes.font_size]}>TWITTER VIEWER</Typography>
                     <Tabs
                         value={value}
                         onChange={handleChange}
@@ -89,7 +95,7 @@ const Header = (props) => {
                     >
                         {
                             HeaderMenuButtons.map((element, index) => {
-                                return <Tab key={index} label={element.name} />
+                                return <Tab className={classes.font_size} key={index} label={element.name} />
                             })
                         }
                     </Tabs>
@@ -103,12 +109,12 @@ const Header = (props) => {
                                         <Typography variant="body2">{props.profile.name}</Typography>
                                         <Link color="inherit" target="_blank" href={props.profile.link}>{props.profile.screen_name}</Link>
                                     </Box>
-                                    <Button onClick={props.logout} color="inherit">Logout</Button>
+                                    <Button onClick={props.logout} color="inherit" className={classes.font_size}>Logout</Button>
                                 </>
                         }
                         {
                         !props.profile &&
-                            <Tooltip title="Twitter authentication" classes={{tooltip: classes.loginTooltip}} TransitionComponent={Fade} leaveDelay={200}>
+                            <Tooltip title="Twitter authentication" classes={{tooltip: classes.loginTooltip}} className={classes.font_size} TransitionComponent={Fade} leaveDelay={200}>
                                 <Button onClick={login} color="inherit">
                                     {
                                         !isDisabledLoginButton ? <>Login</> : <CircularProgress size={20} color="inherit" />
