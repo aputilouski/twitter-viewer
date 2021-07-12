@@ -1,3 +1,6 @@
+import Cookies from "js-cookie";
+
+
 const ACCESS_TOKEN = 'access_token';
 
 
@@ -15,8 +18,17 @@ let AccessToken = {
         return localStorage.removeItem(ACCESS_TOKEN)
     },
 }
+
+
 export const initAccessToken = () => {
-    AccessToken.value = AccessToken.getAccessToken();
+    const access_token = Cookies.get(ACCESS_TOKEN);
+    if(access_token) {
+        localStorage.setItem(ACCESS_TOKEN, access_token);
+        Cookies.remove(ACCESS_TOKEN)
+        AccessToken.value = access_token
+    } else {
+        AccessToken.value = AccessToken.getAccessToken();
+    }
 }
 
 
