@@ -5,7 +5,7 @@ let initialState = {
     tweets: [],
     tweetsAmount: 0,
     pageSize: 0,
-    history: ['belteanews', 'OnlinerBY', 'tutby'],
+    history: ['NASA360', 'SPACEdotcom', 'SpaceX'],
     isLoading: false,
     inputValue: {},
     mediaArea: {},
